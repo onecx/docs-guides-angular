@@ -1,0 +1,116 @@
+= NgRX
+This chapter gives guidance about NgRx. NgRx is a framework for building reactive applications in Angular.
+
+OneCx uses NgRx to manage the state of an applet. The communication with the store is done by smart components, usually by the page components. 
+
+== Guidelines for NgRx 
+* An action is only dispatched at one place.
+* Actions are never dispatched conditionally.
+* For every component that is getting data from the store there is an interface for the viewmodel that is called like the component class but with postfix "ViewModel".
+* For every component that is getting data from the store there is a selector for the viewmodel that is called like the viewmodel interface but with the prefix "select".
+* Every component that is getting data from the store selects only the viewmodel via the viewmodel selector. The observable that is storing the result is called `viewModel$`.
+* Every HTML file of a component that is getting data from the store has an outer ng-container tag that is using the ngrxLet directive e.g. `*ngrxLet="viewModel$ as vm"`.
+* The store never stores data that can be computed from other data in the store. This is done in selectors. 
+* Selectors are only accessing the data on top-level of the part of the store that is past to it. 
+* Every feature module has its own feature store. 
+* The store is the model of the applet and is modeled like that. Data that is relevant for all pages in the feature are stored on top-level. Data that is only relevant for one page is stored in a subsection of the store which is called like the page. 
+* All HTTP calls are done in effects.
+* Routing or changing the URL parameters via the angular router is done in effects.
+* Selectors, reducers and effects are tested.  
+* For reducers there is at least a test for the initial state and for one state that is not the initial state.
+* Effects are tested via marble testing.
+* Selector tests are testing the projector function of the selectors. 
+
+== Project structure
+* https://github.com/onecx-apps/ping-angular-app-ui[See example for NgRx project] 
+The following examples shows a potential folder structure, that might be extended based on the need. 
+
+NOTE: Folders should only be created and used if they have content.
+ [Example Angular NgRx structure]
+----
+├── src
+│   ├── app
+│   │   ├── featuremodule1      // one of feature modules, might have many of them
+│   │   │    ├── components     // optional - components shared between pages of this feature module
+│   │   │    │    ├── featurecomponent1
+│   │   │    │    │    ├── featurecomponent1.component.html
+│   │   │    │    │    ├── featurecomponent1.component.scss
+│   │   │    │    │    ├── featurecomponent1.component.spec.ts
+│   │   │    │    │    ├── featurecomponent1.component.ts
+│   │   │    ├── directives     // optional - directives used in specific feature module
+│   │   │    ├── pages
+│   │   │    │    ├── page1       // one of pages, might have many of them
+│   │   │    │    │     ├── page1subcomponent1    // one of subcomponent for page, optional + might have many of them
+│   │   │    │    │     │     ├── page1subcomponent1.component.html
+│   │   │    │    │     │     ├── page1subcomponent1.component.scss
+│   │   │    │    │     │     ├── page1subcomponent1.component.spec.ts
+│   │   │    │    │     │     ├── page1subcomponent1.component.ts
+│   │   │    │    │     ├── page1.component.html
+│   │   │    │    │     ├── page1.component.scss
+│   │   │    │    │     ├── page1.component.spec.ts
+│   │   │    │    │     ├── page1.component.ts
+│   │   │    │    │     ├── page1.reducer.ts
+│   │   │    │    │     ├── page1.reducer.spec.ts
+│   │   │    │    │     ├── page1.selectors.ts
+│   │   │    │    │     ├── page1.selectors.spec.ts
+│   │   │    │    │     ├── page1.state.ts
+│   │   │    │    │     ├── page1.effects.spec.ts
+│   │   │    │    │     ├── page1.effects.ts
+│   │   │    │    │     ├── page1.actions.ts
+│   │   │    ├── featuremodule1.module.ts
+│   │   │    ├── featuremodule1.reducers.ts
+│   │   │    ├── featuremodule1.reducers.spec.ts
+│   │   │    ├── featuremodule1.routes.ts
+│   │   │    ├── featuremodule1.selectors.ts
+│   │   │    ├── featuremodule1.selectors.spec.ts
+│   │   │    ├── featuremodule1.state.ts
+│   │   ├── core // models and services
+│   │   │    ├── models
+│   │   │    │    ├── model1.ts
+│   │   │    ├── generated      //generated from openApi
+│   │   │    │    ├── models
+│   │   │    │    ├── services   
+│   │   │    ├── services
+│   │   │    │    ├── service1.ts
+│   │   │    ├── core.module.ts
+│   │   ├── root 
+│   │   │    ├── permissions
+│   │   │    ├── root.module.ts
+│   │   ├── shared // (technical) components and directives used in multiple feature modules 
+│   │   │    ├── components
+│   │   │    │     ├── sharedcomponent1
+│   │   │    │     │     ├── sharedcomponent1.component.html
+│   │   │    │     │     ├── sharedcomponent1.component.scss
+│   │   │    │     │     ├── sharedcomponent1.component.spec.ts
+│   │   │    │     │     ├── sharedcomponent1.component.ts
+│   │   │    ├── directives
+│   │   │    │     ├── directive1.ts
+│   │   │    │     ├── directive1.spec.ts
+│   │   │    ├── shared.module.ts 
+│   │   ├── app-routing.module.ts
+│   │   ├── app.component.html
+│   │   ├── app.component.scss
+│   │   ├── app.component.ts
+│   │   ├── app.module.ts
+│   │   ├── app.state.ts
+│   │   ├── app.reducers.ts
+│   │   ├── app.reducers.spec.ts
+│   │   ├── app.selectors.ts
+│   │   ├── app.selectors.spec.ts
+│   ├── assets
+│   │   │   ├── i18n
+│   │   │   ├── fonts
+│   │   │   ├── images
+│   │   │   ├── scss
+│   │   │   ├── yamls
+│   ├── environments
+│   │   │   ├── dev
+│   │   │   ├── prod
+----
+
+== Further information about NgRx
+For a further introduction, please checkout the https://ngrx.io/[NgRX documentation].
+
+Furthermore, the following https://app.pluralsight.com/library/courses/rxjs-angular-reactive-development/table-of-contents[video tutorial] might be helpful.
+ 
+

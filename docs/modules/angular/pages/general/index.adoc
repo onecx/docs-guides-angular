@@ -1,0 +1,62 @@
+= Angular
+
+Angular is a TypeScript-based, free and open-source single-page web application framework
+
+https://angular.io/[Angular homepage] 
+
+https://angular.io/guide/developer-guide-overview[Guides]
+
+https://github.com/angular/angular[Source code]
+
+https://angular.io/start[Angular quick starts]
+
+https://ngrx.io/[NgRx]
+
+https://github.com/onecx-apps/ping-angular-app-ui[Ping angular app ui]
+
+NgRx Store provides reactive state management for Angular apps inspired by Redux.
+
+== Requirements
+
+For the developing the Quarkus application we need to install these tools:
+
+=== Developer IDE
+
+    * https://code.visualstudio.com/[Visual Studio Code]
+
+
+=== VS Code extensions
+* https://marketplace.visualstudio.com/items?itemName=SonarSource.sonarlint-vscode[SonarLint]
+
+* https://marketplace.visualstudio.com/items?itemName=Angular.ng-template[Angular Language Service]
+
+* https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint[EsLint]
+
+* https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens[GitLens]
+
+* https://marketplace.visualstudio.com/items?itemName=wix.vscode-import-cost[Import Cost]
+
+* https://marketplace.visualstudio.com/items?itemName=VisualStudioExptTeam.vscodeintellicode[IntelliCode)]
+
+* https://marketplace.visualstudio.com/items?itemName=VisualStudioExptTeam.intellicode-api-usage-examples[IntelliCode API Usage Examples]
+
+* https://marketplace.visualstudio.com/items?itemName=Zignd.html-css-class-completion[IntelliSense for CSS class names in HTML]
+
+* https://marketplace.visualstudio.com/items?itemName=ecmel.vscode-html-css[HTML CSS Support]
+
+* https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode[Prettier - Code formatter]
+
+* https://marketplace.visualstudio.com/items?itemName=rvest.vs-code-prettier-eslint[Pretiier ESLint]
+
+* https://marketplace.visualstudio.com/items?itemName=rangav.vscode-thunder-client[ThunderClient]
+
+* https://plugins.jetbrains.com/plugin/7973-sonarlint[SonarLint]
+
+=== Useful browser plugins
+* https://angular.io/guide/devtools#devtools-overview[Angular dev tools extension]
+* https://developer.chrome.com/docs/lighthouse/overview/[Lighthouse]
+
+* https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd[ReduxDevTools]
+
+=== Useful links
+* https://storybook.js.org/[Storybook]
