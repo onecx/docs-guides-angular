@@ -20,7 +20,7 @@ The following guideline are applying for asynchronous code and the work with Obs
 
 * BehaviourSubject in a service: unsubscribing needed (created externally and emits an infinite number of values)
 
-* Consider the use of the Async pipe when displaying asynchronous values
+* Consider the use of the Async pipe when displaying asynchronous values.
 
 * Always think about https://github.com/ngneat/until-destroy[unsubscribing()]. Unsubscribing is needed when the Observable is not created inside the component and emits an infinite number of values.  
 
@@ -36,12 +36,11 @@ The following guideline are applying for translations:
 *	Do *not* use TranslateService.instant.
 *	A translation key is only used in one place. Create new one with the same value if required.
 *	Shared components in a library should have default translations in the translation files of the library. Only if needed, create an Input in the component to customize the displayed string.
-* Every page has its own subsection in the translation file that is called like the component . 
-* The structure in the subsection follows the structure of the page 
+* Every page has its own subsection in the translation file that is called like the component. 
+* The structure in the subsection follows the structure of the page.
 * Translations of shared components are stored in a subsection with the name of the component.
 * No wrapper “DEFAULTS” is needed in the translation files in a library. 
 
-// TODO: Explain the translation structure for a shared library, e.g. for PIA
 
 == Components
 The following guidelines are applying for components:
@@ -66,7 +65,7 @@ Committed code must have a certain quality. The following guidelines must be con
 *	Format the code
 **	Run `npm run format`
 **	If you need to format a specific file, you can use:
-***	`nx format:write –files  `*_filepath_*` `
+***	`nx format:write –files  *_filepath_* `
 
 == Project structure
 The following examples shows a potential folder structure, that might be extended based on the need. 
@@ -84,8 +83,6 @@ NOTE: Folders should only be created and used if they have content.
 │   │   │    │    │    ├── featurecomponent1.component.scss
 │   │   │    │    │    ├── featurecomponent1.component.spec.ts
 │   │   │    │    │    ├── featurecomponent1.component.ts
-│   │   │    ├── directives // optional - directives used in specific feature module
-
 │   │   │    ├── pages
 │   │   │    │    ├── page1 // one of pages, might have many of them
 │   │   │    │    │     ├── page1subcomponent1 // one of subcomponent for page, optional + might have many of them
@@ -99,19 +96,7 @@ NOTE: Folders should only be created and used if they have content.
 │   │   │    │    │     ├── page1.component.ts
 │   │   │    ├── utils // optional
 │   │   │    ├── featuremodule1.module.ts
-│   │   ├── core // models and services
-│   │   │    ├── models
-│   │   │    │    ├── model1.ts
-│   │   │    ├── generated //generated from openApi
-│   │   │    │    ├── models
-│   │   │    │    ├── services   
-│   │   │    ├── services
-│   │   │    │    ├── service1.ts
-│   │   │    ├── core.module.ts
-│   │   ├── root 
-│   │   │    ├── permissions
-│   │   │    ├── root.module.ts
-│   │   ├── shared // (technical) components and directives used in multiple feature modules 
+│   │   ├── shared // (technical) components and directives used in multiple feature modules
 │   │   │    ├── components
 │   │   │    │     ├── sharedcomponent1
 │   │   │    │     │     ├── sharedcomponent1.component.html
@@ -121,6 +106,13 @@ NOTE: Folders should only be created and used if they have content.
 │   │   │    ├── directives
 │   │   │    │     ├── directive1.ts
 │   │   │    │     ├── directive1.spec.ts
+│   │   │    ├── generated //generated from openApi
+│   │   │    │    ├── models
+│   │   │    │    ├── services 
+│   │   │    ├── models
+│   │   │    │    ├── model1.ts
+│   │   │    ├── services
+│   │   │    │    ├── service1.ts
 │   │   │    ├── shared.module.ts 
 │   │   ├── app-routing.module.ts
 │   │   ├── app.component.html
@@ -137,5 +129,3 @@ NOTE: Folders should only be created and used if they have content.
 │   │   │   ├── dev
 │   │   │   ├── prod
 ----
-
-// TODO: see the example of ping-angular-ui-app
