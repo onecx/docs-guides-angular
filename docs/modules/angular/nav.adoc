@@ -5,4 +5,4 @@
 ** xref:ngrx/ngrx.adoc[NgRx]
 ** Libraries
 *** xref:libraries/symlink.adoc[How to create a SymLink]
-*** xref:libraries/troubleshooting.adoc[Troubleshooting]
+*** xref:libraries/workingWithSharedLibraries.adoc[]
