@@ -8,7 +8,7 @@ This chapter gives guidance which guidelines should be followed during the devel
 *	Manually test with shell and in the standalone mode.
 *	Tests should run in the build pipeline.
 
-== Asynchronous behaviour / observables
+== Asynchronous behavior / observables
 
 The following guideline are applying for asynchronous code and the work with Observables:
 [IMPORTANT]
@@ -16,15 +16,16 @@ The following guideline are applying for asynchronous code and the work with Obs
 *	Do not assign the value of an Observable to members of a component or other class (function calls are OK). If storing of the value is needed, consider a https://www.learnrxjs.io/learn-rxjs/subjects/behaviorsubject[BehaviorSubject]. 
 ====
 
-* BehaviourSubject insight the component: no unsubscribing needed (emits an infinite number of values but created inside the component) 
-
-* BehaviourSubject in a service: unsubscribing needed (created externally and emits an infinite number of values)
-
 * Consider the use of the Async pipe when displaying asynchronous values.
 
-* Always think about https://github.com/ngneat/until-destroy[unsubscribing()]. Unsubscribing is needed when the Observable is not created inside the component and emits an infinite number of values.  
+* Always think about https://github.com/ngneat/until-destroy[unsubscribing]. Unsubscribing is needed when the Observable is not created inside the component and emits an infinite number of values.  
 
-* HTTP Call: no unsubscribing needed (created externally but emits only one value).
+** HTTP Call: no unsubscribing needed (created externally but emits only one value).
+
+** BehaviorSubject inside the component: no unsubscribing needed (emits an infinite number of values but created inside the component) 
+
+** BehaviorSubject in a service: unsubscribing needed (created externally and emits an infinite number of values)
+
 
 
 
