@@ -39,12 +39,13 @@ NOTE: Folders should only be created and used if they have content.
 │   │   │    │    │    ├── featurecomponent1.component.ts
 │   │   │    ├── directives     // optional - directives used in specific feature module
 │   │   │    ├── pages
-│   │   │    │    ├── page1       // one of pages, might have many of them
-│   │   │    │    │     ├── page1subcomponent1    // one of subcomponent for page, optional + might have many of them
+│   │   │    │    ├── page1       // each pages gets a subfolder, might have many of them
+│   │   │    │    │     ├── page1subcomponent1    // one of subcomponent for page, optional + might have many of them, this can also be a dialog that is only used by this pages
 │   │   │    │    │     │     ├── page1subcomponent1.component.html
 │   │   │    │    │     │     ├── page1subcomponent1.component.scss
 │   │   │    │    │     │     ├── page1subcomponent1.component.spec.ts
 │   │   │    │    │     │     ├── page1subcomponent1.component.ts
+│   │   │    │    │     │     ├── page1subcomponent1.viewmodel.ts
 │   │   │    │    │     ├── page1.component.html
 │   │   │    │    │     ├── page1.component.scss
 │   │   │    │    │     ├── page1.component.spec.ts
@@ -57,6 +58,28 @@ NOTE: Folders should only be created and used if they have content.
 │   │   │    │    │     ├── page1.effects.spec.ts
 │   │   │    │    │     ├── page1.effects.ts
 │   │   │    │    │     ├── page1.actions.ts
+│   │   │    │    │     ├── page1.viewmodel.ts
+│   │   │    ├── dialogs // dialogs which are used across pages
+│   │   │    │    ├── dialog1       // each dialog gets a subfolder, might have many of them
+│   │   │    │    │     ├── dialog1subcomponent1    // one of subcomponent for page, optional + might have many of them
+│   │   │    │    │     │     ├── dialog1subcomponent1.component.html
+│   │   │    │    │     │     ├── dialog1subcomponent1.component.scss
+│   │   │    │    │     │     ├── dialog1subcomponent1.component.spec.ts
+│   │   │    │    │     │     ├── dialog1subcomponent1.component.ts
+│   │   │    │    │     │     ├── dialog1subcomponent1.viewmodel.ts
+│   │   │    │    │     ├── dialog1.component.html
+│   │   │    │    │     ├── dialog1.component.scss
+│   │   │    │    │     ├── dialog1.component.spec.ts
+│   │   │    │    │     ├── dialog1.component.ts
+│   │   │    │    │     ├── dialog1.reducer.ts
+│   │   │    │    │     ├── dialog1.reducer.spec.ts
+│   │   │    │    │     ├── dialog1.selectors.ts
+│   │   │    │    │     ├── dialog1.selectors.spec.ts
+│   │   │    │    │     ├── dialog1.state.ts
+│   │   │    │    │     ├── dialog1.effects.spec.ts
+│   │   │    │    │     ├── dialog1.effects.ts
+│   │   │    │    │     ├── dialog1.actions.ts
+│   │   │    │    │     ├── dialog1.viewmodel.ts
 │   │   │    ├── featuremodule1.module.ts
 │   │   │    ├── featuremodule1.reducers.ts
 │   │   │    ├── featuremodule1.reducers.spec.ts
@@ -64,18 +87,6 @@ NOTE: Folders should only be created and used if they have content.
 │   │   │    ├── featuremodule1.selectors.ts
 │   │   │    ├── featuremodule1.selectors.spec.ts
 │   │   │    ├── featuremodule1.state.ts
-│   │   ├── core // models and services
-│   │   │    ├── models
-│   │   │    │    ├── model1.ts
-│   │   │    ├── generated      //generated from openApi
-│   │   │    │    ├── models
-│   │   │    │    ├── services   
-│   │   │    ├── services
-│   │   │    │    ├── service1.ts
-│   │   │    ├── core.module.ts
-│   │   ├── root 
-│   │   │    ├── permissions
-│   │   │    ├── root.module.ts
 │   │   ├── shared // (technical) components and directives used in multiple feature modules 
 │   │   │    ├── components
 │   │   │    │     ├── sharedcomponent1
@@ -86,6 +97,9 @@ NOTE: Folders should only be created and used if they have content.
 │   │   │    ├── directives
 │   │   │    │     ├── directive1.ts
 │   │   │    │     ├── directive1.spec.ts
+│   │   │    ├── generated      //generated from openApi
+│   │   │    │    ├── models
+│   │   │    │    ├── services   
 │   │   │    ├── shared.module.ts 
 │   │   ├── app-routing.module.ts
 │   │   ├── app.component.html
@@ -107,6 +121,31 @@ NOTE: Folders should only be created and used if they have content.
 │   │   │   ├── dev
 │   │   │   ├── prod
 ----
+
+== Subcomponents
+Usually subcomponents have a single input for the viewmodel called `vm`. This viewmodel is a member of the components viewmodel and is build via selectors. If a subcomponent has also a subsubcomponent, the viewmodel of the subcomponent has a member containing the viewmodel of the subsubcomponent.
+
+== Dialogs
+There are two kinds of dialogs
+    * dialogs only used in one page
+    * dialogs used in multiple pages
+
+Both dialog types have in common that 
+* they are opened in effects
+* the result is handled in the effects and is converted into an action
+* they have a viewmodel
+* they are opened with `PortalDialogService.openDialog(...)`
+* they are communicating with the opener of the dialog by implementing `DialogResult`
+    * Implementing `DialogButtonClicked` can help setting the dialog result before the dialog closes
+
+=== Dialogs used in one page
+The components of this dialogs are subcomponents of the page they are used in. They do not have a septate section in the store because they are sharing the data of the page they are belonging to. The viewmodel can be passed via an input which is called 'vm'. The viewmodel is read from the store via a selector in the effects or build with data from the action which is triggering the opening of the dialog.
+
+The dialogs can also dispatch actions but only if they are not used to react on the closing of the dialog. Reacting to the closing is always done via the Observable returned by `openDialog(...)`
+
+=== Dialogs used in multiple pages
+The structure and inner workings of a dialog that is used in many pages is similar to the structure of a page. They have their own section in the store, own effects, own selectors,...
+This type of dialog is always dispatching an action that is informing about the opening of the dialog in the constructor of the dialog component. The viewmodel is read from the store via a selector like it is done for a page.
 
 == Further information about NgRx
 For a further introduction, please checkout the https://ngrx.io/[NgRX documentation].
