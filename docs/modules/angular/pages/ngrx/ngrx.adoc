@@ -40,12 +40,19 @@ NOTE: Folders should only be created and used if they have content.
 │   │   │    ├── directives     // optional - directives used in specific feature module
 │   │   │    ├── pages
 │   │   │    │    ├── page1       // each pages gets a subfolder, might have many of them
-│   │   │    │    │     ├── page1subcomponent1    // one of subcomponent for page, optional + might have many of them, this can also be a dialog that is only used by this pages
+│   │   │    │    │     ├── page1subcomponent1    // one of subcomponent for page, optional + might have many of them
 │   │   │    │    │     │     ├── page1subcomponent1.component.html
 │   │   │    │    │     │     ├── page1subcomponent1.component.scss
 │   │   │    │    │     │     ├── page1subcomponent1.component.spec.ts
 │   │   │    │    │     │     ├── page1subcomponent1.component.ts
 │   │   │    │    │     │     ├── page1subcomponent1.viewmodel.ts
+│   │   │    │    │     ├── dialogs
+│   │   │    │    │     │     ├── page1dialog1    // dialog that is only used by this page, optional + might have many of them
+│   │   │    │    │     │     │     ├── page1dialog1.component.html
+│   │   │    │    │     │     │     ├── page1dialog1.component.scss
+│   │   │    │    │     │     │     ├── page1dialog1.component.spec.ts
+│   │   │    │    │     │     │     ├── page1dialog1.component.ts
+│   │   │    │    │     │     │     ├── page1dialog1.viewmodel.ts
 │   │   │    │    │     ├── page1.component.html
 │   │   │    │    │     ├── page1.component.scss
 │   │   │    │    │     ├── page1.component.spec.ts
@@ -59,7 +66,7 @@ NOTE: Folders should only be created and used if they have content.
 │   │   │    │    │     ├── page1.effects.ts
 │   │   │    │    │     ├── page1.actions.ts
 │   │   │    │    │     ├── page1.viewmodel.ts
-│   │   │    ├── dialogs // dialogs which are used across pages
+│   │   │    ├── dialogs // dialogs which are used across pages, optional
 │   │   │    │    ├── dialog1       // each dialog gets a subfolder, might have many of them
 │   │   │    │    │     ├── dialog1subcomponent1    // one of subcomponent for page, optional + might have many of them
 │   │   │    │    │     │     ├── dialog1subcomponent1.component.html
@@ -139,7 +146,7 @@ Both dialog types have in common that
     * Implementing `DialogButtonClicked` can help setting the dialog result before the dialog closes
 
 === Dialogs used in one page
-The components of this dialogs are subcomponents of the page they are used in. They do not have a septate section in the store because they are sharing the data of the page they are belonging to. The viewmodel can be passed via an input which is called 'vm'. The viewmodel is read from the store via a selector in the effects or build with data from the action which is triggering the opening of the dialog.
+The components of this dialogs are subcomponents of the page they are used in. The subcomponents are placed in a subfolder called 'dialogs'. They do not have a septate section in the store because they are sharing the data of the page they are belonging to. The viewmodel can be passed via an input which is called 'vm'. The viewmodel is read from the store via a viewmodel selector in the effects or build with data from the action which is triggering the opening of the dialog.
 
 The dialogs can also dispatch actions but only if they are not used to react on the closing of the dialog. Reacting to the closing is always done via the Observable returned by `openDialog(...)`
 
