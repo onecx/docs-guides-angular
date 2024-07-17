@@ -134,10 +134,12 @@ Usually subcomponents have a single input for the viewmodel called `vm`. This vi
 
 == Dialogs
 There are two kinds of dialogs:
+
     * dialogs only used in one page
     * dialogs used in multiple pages
 
 Both dialog types have in common that:
+
 * they are opened in effects
 * the result is handled in the effects and is converted into an action
 * they have a viewmodel
