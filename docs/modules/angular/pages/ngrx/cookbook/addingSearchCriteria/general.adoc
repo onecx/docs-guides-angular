@@ -1,0 +1,99 @@
+=== Configure the search criteria and parameters
+To configure the search results, the following actions must be taken.
+// TODO: Provide explanation about: The mapping of the URL parameters must be configured. 
+
+:toc:
+
+==== ACTION S1: Add additional properties to the `+<feature>-bff.yaml+`
+_Adapt in File:_ `+<feature>-bff.yaml+`
+
+===== Todos:
+
+* The `+<FeatureName>SearchRequest+` data structure in the BFF yaml must be adapted. 
+
+** All the data that should be displayed in the request must be in that data structure either on top-level or in sub data structures. 
+
+---
+
+IMPORTANT: Run the command `npm run apigen` after adapting the OpenAPI to transform the changes into typescript code.
+
+==== ACTION S2: Please define the members for your `+<%= featurePropertyName %>SearchCriteriasSchema+` here
+_Adapt in File:_ `+<feature>-search.parameters.ts+`
+
+===== Todos:
+* Adapt search parameters
+** keys need to match the keys from your OpenAPIs SearchCriteria Object
+** always start with `+z.string()+`
+** when required, you can use `+.transform()+` to extend the validation
+** dates are always mapped to strings (as JSON does not know DateTime)
+
+[source, javascript]
+----
+    exampleString: z.string().optional(),
+    exampleNumber: z
+        .string()
+        .transform((v) => (v ? Number(v) : undefined))
+        .optional(),
+    exampleStringArray: z
+        .union([z.string(), z.array(z.string())])
+        .transform((v: string | string[] | undefined): string[] | undefined =>
+        v instanceof Array || !v
+            ? (v as string[] | undefined)
+            : ([v] as string[]),
+        )
+        .transform((v: string[] | undefined) => v?.map((e) => e))
+        .optional(),
+    exampleNumberArray: z
+        .union([z.string(), z.array(z.string())])
+        .transform((v: string | string[] | undefined): string[] | undefined =>
+        v instanceof Array || !v
+            ? (v as string[] | undefined)
+            : ([v] as string[]),
+        )
+        .transform((v: string[] | undefined) => v?.map((e) => Number(e)))
+        .optional(),
+    exampleEnum: z
+        .string()
+        .transform((v) => v as <%= featurePropertyName %>SearchRequestExampleEnum)
+        .optional(),
+----
+
+==== ACTION S3: Please specify here your desired search criterias, link to documentation
+_Adapt in File:_ `+<feature>-search.component.html+`
+
+===== Todos:
+
+* The input fields must be added
+** `+formControlName+` and `+ngModel+`-path must match to your SearchCriteria model
+[subs=+macros]
+
+[source, html]
+----
+ <form [formGroup]="criteriaGroup">
+      <div class="grid mt-0 p-fluid">
+        <div class="col-12 md:col-3">
+          <span class="p-float-label">
+           // PLACE YOUR INPUT FIELD HERE
+          </span>
+        </div>
+        ...
+----
+
+* Examples for different fields
+** Example for text input field of type string
+*** Remove `+// PLACE YOUR INPUT FIELD HERE+` and paste the following code
+*** Adapt `+id+`, `+formControlName+`, `+ngModel+` and `+for+` as well as the labels translation key
+
+[source, html]
+----
+    <input
+      id="id"
+      pInputText
+      type="text"
+      formControlName="id"
+      class="p-inputtext p-component"
+    />
+    <label for="id">{{
+      'YOUR_PRODUCT.CRITERIA.ID' | translate
+    }}</label>
+----
