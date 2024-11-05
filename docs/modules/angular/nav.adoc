@@ -2,7 +2,13 @@
 ** xref:general/index.adoc[General]
 *** xref:general/guidelines.adoc[Guidelines]
 ** Cookbook
-** xref:ngrx/ngrx.adoc[NgRx]
+** NgRx
+*** xref:ngrx/ngrx.adoc[Guidelines]
+*** Cookbook
+**** xref:ngrx/cookbook/addingSearchCriteria/general.adoc[Adding Search Criteria]
+***** xref:ngrx/cookbook/addingSearchCriteria/calendar.adoc[Calendar]
+***** xref:ngrx/cookbook/addingSearchCriteria/dropdown.adoc[Dropdown]
+***** xref:ngrx/cookbook/addingSearchCriteria/multiselect.adoc[Multiselect]
 ** Libraries
 *** xref:libraries/symlink.adoc[How to create a SymLink]
 *** xref:libraries/workingWithSharedLibraries.adoc[]
