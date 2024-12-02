@@ -10,7 +10,7 @@
 Usage::
 *Initialize and access configuration variables for a specific Microfrontend*. 
 +
-It is similar to xref:angular-integration-interface.adoc#configuration_service[ConfigurationService], however, *App Config Service* should be used for a Microfrontend configuration management. If sharing the configuration variable with multiple Microfrontends is desired, please use xref:angular-integration-interface.adoc#configuration_service[ConfigurationService] and provide variables via Shell Application.
+It is similar to xref:libraries/angular-integration-interface.adoc#configuration_service[ConfigurationService], however, *App Config Service* should be used for a Microfrontend configuration management. If sharing the configuration variable with multiple Microfrontends is desired, please use xref:libraries/angular-integration-interface.adoc#configuration_service[ConfigurationService] and provide variables via Shell Application.
 
 Topics used::
 None
