@@ -1,9 +1,11 @@
-= Add calendar input field
+= Calendar
 
+== Goal: Add a Calendar as a search criteria input field for your search page. 
+
+. First add a new member to the <%= featurePropertyName %>SearchCriteriasSchema:
++
 _Adapt in File:_ `+<feature>-search.parameters.ts+`
-
-First, you need to add a new member to the <%= featurePropertyName %>SearchCriteriasSchema:
-
++
 [source, javascript]
 ----    
     exampleDate: z
@@ -12,11 +14,11 @@ First, you need to add a new member to the <%= featurePropertyName %>SearchCrite
         .optional(),
 ----
 
-Next, add the following code to your formGroup in the html file and adapt * by replacing all occurences of `+exampleDate+` with the actual name which is defined
+. Next, add the following code to your formGroup in the html file and adapt * by replacing all occurences of `+exampleDate+` with the actual name which is defined
 * `+dateFormat+` according to your requirements following this primeng specific date format https://primeng.org/calendar#format where `+mm/dd/yy+` is the default.
-
++
 _Adapt in File:_ `+<feature>-search.component.html+`
-
++
 [source, html]
 ----
     <span class="p-float-label">
@@ -38,10 +40,10 @@ _Adapt in File:_ `+<feature>-search.component.html+`
     </span>
 ----
 
-Furthermore, the following needs to be done to correctly create date strings out of a p-calendar selector:
-
+. Furthermore, the following needs to be done to correctly create date strings out of a p-calendar selector:
++
 _Adapt in File:_ `+<feature>-search.component.ts+`
-
++
 [source, javascript]
 ----
     import { Calendar } from 'primeng/calendar';
@@ -67,10 +69,10 @@ _Adapt in File:_ `+<feature>-search.component.ts+`
     ...
 ----
 
-If it is required to only have the date and not the datetime in the URL, you need to adapt the `+syncParamsToUrl$+` effect:
-
+. If it is required to only have the date and not the datetime in the URL, you need to adapt the `+syncParamsToUrl$+` effect:
++
 _Adapt in File:_ `+<feature>-search.effects.ts+`
-
++
 [source, javascript]
 ----
   syncParamsToUrl$ = createEffect(

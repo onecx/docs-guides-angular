@@ -1,7 +1,11 @@
-= Add dropdown input field
+= Dropdown
 
-First, you need to add a new member to the <%= featurePropertyName %>SearchCriteriasSchema:
+== Goal: Add a Dropdown as a search criteria input field for your search page. 
 
+. First, add a new member to the <%= featurePropertyName %>SearchCriteriasSchema:
++
+_Adapt in File:_ `+<feature>-search.parameters.ts+`
++
 [source, javascript]
 ----    
     exampleEnum: z
@@ -10,10 +14,10 @@ First, you need to add a new member to the <%= featurePropertyName %>SearchCrite
         .optional(),
 ----
 
-Next, add the following code to your formGroup in the html file and adapt by replacing all occurences of `+exampleEnum+` with the actual name which is defined.
-
+. Next, add the following code to your formGroup in the html file and adapt by replacing all occurences of `+exampleEnum+` with the actual name which is defined.
++
 _Adapt in File:_ `+<feature>-search.component.html+`
-
++
 [source, html]
 ----
     <span class="p-float-label">
@@ -33,10 +37,10 @@ _Adapt in File:_ `+<feature>-search.component.html+`
     </span>
 ----
 
-Furthermore, the following needs to be done to have the correct translations displayed:
-
+. Furthermore, the following needs to be done to have the correct translations displayed:
++
 _Adapt in File:_ `+<feature>-search.component.ts+`
-
++
 [source, javascript]
 ----
     import { TranslateService } from '@ngx-translate/core';
