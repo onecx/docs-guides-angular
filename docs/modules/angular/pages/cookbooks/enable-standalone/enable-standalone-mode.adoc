@@ -1,0 +1,85 @@
+= Enable OneCX app to run in standalone
+Bastian Jakobi bastian.jakobi@capgemini.com
+:source-highlighter: highlight.js
+
+The goal of this guide is to provide step by step instructions on how to enable standalone mode for an existing OneCX application and allowing it to run without a shell. 
+
+== General
+=== Prerequisites
+This guide assumes that an Angular project is already set up and migrated to be compatible with OneCX.
+
+Note that this guide does not cover general Angular project setup or the steps to migrate to OneCX.
+
+== Steps
+The goal of this cookbook is to refactor an existing OneCX compatible app so that it can not only run inside the OneCX platform but also as a standalone application. All steps have been tested in an app generated with Angular CLI and migrated to be compatible with OneCX but should also work in other OneCX compatible Angular apps (e.g. apps generated with NX).
+
+=== Install `@onecx/standalone-shell`
+In order to run a OneCX app in standalone, it's necessary to mock/provide some of the functionality that would usually be provided by the OneCX platform. To make this easy, `@onecx/standalone-shell` provides all the necessary code wrapped in a importable Angular module. Before using the module, the necessary dependency has to be added to the app.
+
+[source,console]
+----
+npm i @onecx/standalone-shell
+----
+
+=== Import `StandaloneShellModule` and modify app.component.html + app.component.ts
+When running an app in standalone, `app.module.ts`, `app.component.html` and `app.component.ts` are treated as the application entrypoints. To add standalone capabilities to the application, the `StandaloneShellModule` provided by `@onecx/standalone-shell` has to be added to the imports array of `app.module.ts`.
+
+Afterwards the entire application has to be wrapped in a standalone-shell-viewport component provided as part of the imported `StandaloneShellModule`. To achieve this goal the contents of `app.component.html` have to be replaced with the following code:
+
+```
+<ocx-standalone-shell-viewport></ocx-standalone-shell-viewport>
+```
+
+Afterwards it should be ensured that the applications remote entrypoint (e.g. `app-entrypoint.component.ts`) and the applications standalone entrypoint (e.g. `app.component.ts`) have different selector names. The selector name can be found inside the `@Component` annotation that is placed before the component class in the components TypeScript file.
+
+=== Use `AppComponent` selector in `index.html`
+To correctly render the standalone entrypoint, it has to be referenced in `index.html`. Therefore the element tag placed inside the body of `index.html` must match the selector name of the applications standalone entrypoint (e.g. `app.component.ts`), which can be obtained as mentioned above.
+
+=== Create separate `main.ts` and `bootstrap.ts` for standalone
+To correctly bootstrap and render the standalone version of an application, it's necessary to create separate main and bootstrap files alongside the already existing files used for microfrontend bootstrapping (e.g. `remote-main.ts` and `remote-bootstrap.ts`).
+
+The newly created bootstrap file must contain the following code:
+```
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic'
+import { AppModule } from '@app/app.module'
+
+platformBrowserDynamic()
+  .bootstrapModule(AppModule)
+  .catch((err) => console.error(err))
+```
+The newly created main file should import the bootstrap files and handle potential errors:
+```
+import('./bootstrap').catch((err) => console.error(err))
+```
+
+After creating the files, the newly created main files must be referenced in the `files` array in `tsconfig.app.json` so that it's included in the applications bundle. Additionally it should be verified that the `build.options.main` property in the applications configuration file (e.g. `angular.json` or `project.json`) points to the newly created main file.
+
+=== Optional: Set up `@ngx-translate` translation loading
+To ensure correct translation loading in an application using `@ngx-translate` a few more modifications have to be applied to `app.module.ts`.
+
+1. The routes passed to `RouterModule.forRoot()` must be wrapped with `addInitializeModuleGuard` from `@onecx/angular-integration-interface`. This ensure correct translation loading for each route. Note that the route configuration might be placed in a separate routing module (e.g. `app-routing.module.ts`)
+
+    imports: [
+      ...
+      RouterModule.forRoot(addInitializeModuleGuard(routes)),
+      ...
+    ],
+
+2. `TranslateModule.forRoot()` has to be configured in the app modules imports array. `createTranslateLoader` has to be imported from `@onecx/angular-integration-interface` and ensures that the correct translation files is loaded on app load.
+
+  imports: [
+    ...
+    TranslateModule.forRoot({
+        loader: {
+          provide: TranslateLoader,
+          useFactory: createTranslateLoader,
+          deps: [HttpClient]
+        }
+      }),
+      ...
+  ],
+
+3. The path to the applications translations is provided automatically by the previously imported `StandaloneShellModule`.
+
+=== Verify that the app is running in standalone
+After following the above mentioned steps the app should be accessible on its configured URL (e.g. http://localhost:4200).
