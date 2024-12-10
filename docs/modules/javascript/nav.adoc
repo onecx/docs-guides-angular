@@ -1,0 +1,9 @@
+* Javascript
+** xref:general/index.adoc[General]
+*** Libraries
+**** xref:libraries/integration-interface.adoc[@onecx/integration-interface]
+** Angular
++
+--
+include::angular:partial$nav.adoc[]
+--
