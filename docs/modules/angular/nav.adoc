@@ -1,9 +1,0 @@
-* Angular
-** xref:general/index.adoc[General]
-*** xref:general/guidelines.adoc[Guidelines]
-** Cookbook
-** xref:ngrx/ngrx.adoc[NgRx]
-** Libraries
-*** xref:libraries/symlink.adoc[How to create a SymLink]
-*** xref:libraries/angular-integration-interface.adoc[@onecx/angular-integration-interface]
-*** xref:libraries/workingWithSharedLibraries.adoc[]
