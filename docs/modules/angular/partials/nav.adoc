@@ -1,0 +1,12 @@
+
+* xref:angular:general/index.adoc[General]
+** xref:angular:general/guidelines.adoc[Guidelines]
+* Cookbooks
+** xref:cookbooks/vanilla-to-onecx/migrate-to-onecx.adoc[Migrate vanilla Angular apps to OneCX]
+** xref:cookbooks/enable-standalone/enable-standalone-mode.adoc[Enable standalone mode for OneCX apps]
+* xref:angular:ngrx/ngrx.adoc[NgRx]
+* Libraries
+** xref:angular:libraries/symlink.adoc[How to create a SymLink]
+** xref:angular:libraries/angular-integration-interface.adoc[@onecx/angular-integration-interface]
+** xref:angular:libraries/workingWithSharedLibraries.adoc[]
+
