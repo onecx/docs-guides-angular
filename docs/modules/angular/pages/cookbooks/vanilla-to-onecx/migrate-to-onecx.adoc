@@ -2,7 +2,7 @@
 Bastian Jakobi bastian.jakobi@capgemini.com
 :source-highlighter: highlight.js
 
-The goal of this guide is to provide step by step instructions on how to migrate a vanilla Angular app (e.g. generated with Angular CLI) to a OneCX compatible microfrontend application. 
+The goal of this guide is to provide step by step instructions on how to migrate a vanilla Angular app to a OneCX compatible microfrontend application. 
 
 == General
 === Prerequisites
@@ -11,31 +11,33 @@ This guide assumes that an Angular project is already set up and that a OneCX pl
 Note that this guide does not cover general Angular project setup or the steps to configure OneCX.
 
 == Migration steps
-The goal of this migration is to transform a "vanilla" Angular app into a OneCX compatible app that exposes a microfrontend which can be loaded and displayed by the OneCX platform. To achieve this goal, a few migration steps have to be completed. All steps have been tested in a fresh app generated with Angular CLI but should also work in other Angular apps (e.g. apps generated with NX).
+The goal of this migration is to transform a "vanilla" Angular app into a OneCX compatible app that exposes a microfrontend which can be loaded and displayed by the OneCX platform. To achieve this goal, a few migration steps have to be completed. All steps have been tested in fresh Angular apps generated with the Angular CLI and the NX CLI (using Webpack as a bundler).
 
-=== Ensure that your Angular app runs in standalone mode
-Before starting the actual app migration, the correct functionality of the application in its "pre-migration" state should be verified by running existing tests, building the app and running it in a browser. This way it can be ensured that the app was working as expected before the migration, which will help to prevent unexpected errors in later stages of the migration.
+=== Ensure that your application works as expected
+Before starting the migration, the correct functionality of the application in its "pre-migration" state should be verified by running existing tests, building the app and running it in a browser. This ensures that the app functions as expected before the migration, helping to prevent unexpected errors in later stages of the process.
 
 === Install necessary dependencies
-In order to turn an app into a OneCX compatible microfrontend it's necessary to first install some dependencies which allow wrapping the app inside a OneCX compatible webcomponent and exposing it as a remote entrypoint.
+In order to convert an app into a OneCX compatible microfrontend it's necessary to first install some dependencies which allow wrapping the app inside a OneCX compatible webcomponent and exposing it as a remote entrypoint.
 
 .Dependencies
 [source,console]
 ----
-npm i @angular/elements @angular-architects/module-federation @onecx/angular-integration-interface @onecx/angular-webcomponents @webcomponents/webcomponentsjs
+npm i @angular/elements@18 @angular-architects/module-federation @onecx/angular-integration-interface @onecx/angular-webcomponents @webcomponents/webcomponentsjs
 ----
-To resolve potential peer-dependency errors during the installation of `@angular/elements`, the dependency can be manually added to `package.json`, using the version number used for other `@angular/` packages in the project.
 
-.Dev-Dependencies
+.Dev-Dependencies (Angular CLI App)
 [source,console]
 ----
 npm i -D webpack webpack-merge ngx-build-plus
 ----
+NOTE: For `nx` based applications the above mentioned dev dependencies are not needed as these apps already ship with a configurable builder.
 
-=== Refactor project configuration to use ngx-build-plus builders
-To correctly bundle an app for usage in a microfrontend context the default Angular bundler has to be replaced with ngx-build-plus and a few additional configuration options have to be specified.
+=== Refactor `angular.json` to use ngx-build-plus builders (Only Angular CLI)
+To correctly bundle an app for use in a microfrontend context, the default Angular bundler must be replaced with ngx-build-plus, and a few additional configuration options need to be specified.
 
-Specifically the projects configuration file (e.g. `angular.json`) has to be modified in the following way:
+Specifically the projects configuration file (`angular.json`) has to be modified in the following way:
+
+NOTE: `YOUR_APP_NAME` should be replaced with the name of the actual application, which can be obtained from `angular.json`. `TODO` comments should be taken care of and afterwards removed from the file. 
 [source,json]
 ...
 "architect": {
@@ -63,7 +65,6 @@ Specifically the projects configuration file (e.g. `angular.json`) has to be mod
             "buildTarget": "YOUR_APP_NAME:build",
             "port": 4200,
             "publicHost": "http://localhost:4200",
-            "extraWebpackConfig": "webpack.config.js",
         },
         "configurations": {
             ...
@@ -84,10 +85,8 @@ Specifically the projects configuration file (e.g. `angular.json`) has to be mod
     ...
 }
 
-NOTE: YOUR_APP_NAME should be replaced with the name of the actual application. `TODO` should be taken care of and afterwards removed from the file. 
-
 === Create app entrypoint files
-To be able to later run an app in both standalone and as a microfrontend it's necessary to provide separate app entrypoints for remote and standalone consumption. This guide will focus on the creation of the remote/microfrontend entrypoints and doesn't require any changes to an Angular apps default entrypoints (app.module.ts, app.component.ts etc.). For instructions on how to prepare a migrated OneCX application and its entrypoints for standalone consumption see the <<Standalone Mode>> section of this document.
+To enable an app to run both as a standalone application and as a microfrontend, it's necessary to provide separate entry points for remote and standalone consumption. This guide will focus on the creation of the remote/microfrontend entrypoints and doesn't require any changes to an Angular apps default entrypoints (app.module.ts, app.component.ts etc.). For instructions on how to prepare a migrated OneCX application and its entrypoints for standalone consumption see the <<Standalone Mode>> section of this document.
 
 ==== Create app-entrypoint-component
 This component will serve as the root entrypoint of the application, when served as a microfrontend.
@@ -160,7 +159,11 @@ NOTE: Depending on the application this file will vary heavily and contain diffe
 ===== Optional: Set up `@ngx-translate` translation loading in the remote module
 To ensure correct translation loading in an application using `@ngx-translate` a few modifications have to be applied to the remote module mentioned above.
 
-1. The routes passed to `RouterModule.forRoot()` must be wrapped with `addInitializeModuleGuard` from `@onecx/angular-integration-interface`. This ensure correct translation loading for each route.
+1. A few imports have to be added at the beginning of the remote module file.
+
+    import { addInitializeModuleGuard, AppStateService, createTranslateLoader, TRANSLATION_PATH, translationPathFactory } from '@onecx/angular-integration-interface';
+
+2. The routes passed to `RouterModule.forRoot()` must be wrapped with `addInitializeModuleGuard`. This ensures correct translation loading for each route.
 
     imports: [
       ...
@@ -168,23 +171,23 @@ To ensure correct translation loading in an application using `@ngx-translate` a
       ...
     ],
 
-2. `TranslateModule.forRoot()` has to be configured in the modules imports array. `createTranslateLoader` has to be imported from `@onecx/angular-integration-interface` and ensures that the correct translation files is loaded on app load.
+3. `TranslateModule.forRoot()` has to be configured in the modules imports array. The factory function `createTranslateLoader` ensures that the correct translation files is loaded on app load.
 
-  imports: [
-    ...
-    TranslateModule.forRoot({
-        extend: true,
-        isolate: false,
-        loader: {
-          provide: TranslateLoader,
-          useFactory: createTranslateLoader,
-          deps: [HttpClient]
-        }
-      }),
+    imports: [
       ...
-  ],
+      TranslateModule.forRoot({
+          extend: true,
+          isolate: false,
+          loader: {
+            provide: TranslateLoader,
+            useFactory: createTranslateLoader,
+            deps: [HttpClient]
+          }
+        }),
+      ...
+    ],
 
-3. The path to the applications translations has to be provided using an injection token and a helper method (all declarations should be imported from `@onecx/angular-integration-interface`).
+4. The path to the applications translations has to be provided using an injection token and `translationPathFactory`.
 
   providers: [
     ...
@@ -216,7 +219,7 @@ To ensure that the newly created file `remote-main.ts` is part of the compiled b
 ```
 "files": [
   ...
-  "src/app/remote.module.ts"
+  "src/app/remote-main.ts"
 ],
 ```
 
@@ -226,6 +229,7 @@ In order to expose this file and ensure correct dependency sharing between the a
 
 The file, `webpack.config.js`, which should be placed in the root folder of the application must contain the following configuration:
 
+NOTE: This file is meant to be used as a minimal starting point. Depending on the application the contents of the file, especially the shared config, may need to be adapted.
 [source,typescript]
 const { ModifyEntryPlugin } = require('@angular-architects/module-federation/src/utils/modify-entry-plugin')
 const { share, withModuleFederationPlugin } = require('@angular-architects/module-federation/webpack')
@@ -257,8 +261,6 @@ module.exports = {
   optimization: { runtimeChunk: false, splitChunks: false }
 }
 
-NOTE: This file is meant to be used as a minimal starting point. Depending on the application the contents of the file, especially the shared config, may need to be adapted.
-
 To allow for a custom Webpack configuration in production environments it's a good practice to additionally create a `webpack.prod.js` file that will extend the base config:
 [source, typescript]
 module.exports = require('./webpack.config')
@@ -266,10 +268,10 @@ module.exports = require('./webpack.config')
 If necessary, this file can be used to overwrite or extend the contents of the base config with production specific values.
 
 === Add environment file `env.json`
-During the loading of an app, OneCX will try to load it's environment file. To avoid any errors, a file called `env.json` should be accessible at http://localhost:4200/remoteEntry. This can be achieved by adding the respective file to the assets or public folder of the application. The file can be used to pass environment variables to OneCX. For now it can just contain an empty object ({}).
+During the loading of an app, OneCX will try to load it's environment file. To avoid any errors, a file called `env.json` should be accessible at http://localhost:4200/env.json. This can be achieved by adding the respective file to the assets or public folder of the application. The file can be used to pass environment variables to OneCX. For now it can just contain an empty object (`{}`).
 
 === Verify that the app is exposing a remote entry point
-After completing all steps listed above, the application should be ready to be used as a microfrontend in the OneCX platform. The applications entrypoint file (remoteEntry.js) should be accessible at http://localhost:4200/remoteEntry.js after starting the application.
+After completing all steps listed above, the application should be ready to be used as a microfrontend in the OneCX platform. After starting the application with its start command (e.g. `npm start`), the applications entrypoint file (remoteEntry.js) should be accessible at http://localhost:4200/remoteEntry.js.
 
 == Standalone Mode
 After completing all steps mentioned in this document, a previously existing "vanilla" Angular application should be runnable as a microfrontend in OneCX. If the app additionally has to support running in standalone (e.g. in local development), a few additional steps are necessary. All steps required for running an app in standalone are covered in the separate xref:cookbooks/enable-standalone/enable-standalone-mode.adoc[Enable OneCX app to run in standalone] cookbook.
