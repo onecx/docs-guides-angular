@@ -1,11 +1,17 @@
 = Calendar
 
+:!sectids:
 == Goal: Add a Calendar as a search criteria input field for your search page. 
+:sectids:
+:sectnums:
 
-. First add a new member to the <%= featurePropertyName %>SearchCriteriasSchema:
-+
+NOTE: Please replace all occurences of `+exampleDate+` with the actual name in the following code snippets
+
+== Parameters
+First add a new member to the <%= featurePropertyName %>SearchCriteriasSchema:
+
 _Adapt in File:_ `+<feature>-search.parameters.ts+`
-+
+
 [source, javascript]
 ----    
     exampleDate: z
@@ -14,11 +20,14 @@ _Adapt in File:_ `+<feature>-search.parameters.ts+`
         .optional(),
 ----
 
-. Next, add the following code to your formGroup in the html file and adapt * by replacing all occurences of `+exampleDate+` with the actual name which is defined
+== HTML
+Next, add the following code to your formGroup in the html file and adapt:
+
+* by replacing all occurences of `+exampleDate+` with the actual name which is defined
 * `+dateFormat+` according to your requirements following this primeng specific date format https://primeng.org/calendar#format where `+mm/dd/yy+` is the default.
-+
+
 _Adapt in File:_ `+<feature>-search.component.html+`
-+
+
 [source, html]
 ----
     <span class="p-float-label">
@@ -40,18 +49,17 @@ _Adapt in File:_ `+<feature>-search.component.html+`
     </span>
 ----
 
-. Furthermore, the following needs to be done to correctly create date strings out of a p-calendar selector:
-+
+== Selectors
+Furthermore, the following needs to be done to correctly create date strings out of a p-calendar selector:
+
 _Adapt in File:_ `+<feature>-search.component.ts+`
-+
+
 [source, javascript]
 ----
     import { Calendar } from 'primeng/calendar';
-
     ... 
 
     @ViewChildren(Calendar) calendars!: QueryList<Calendar>;
- 
     ...
 
     search(formValue: FormGroup) {
@@ -66,13 +74,13 @@ _Adapt in File:_ `+<feature>-search.component.ts+`
       <%= featureClassName %>SearchActions.searchButtonClicked({ searchCriteria }),
       );
     }
-    ...
 ----
 
-. If it is required to only have the date and not the datetime in the URL, you need to adapt the `+syncParamsToUrl$+` effect:
-+
+== Effects (Optional)
+If it is required to only have the `+date+` and not the `+datetime+' in the URL, you need to adapt the `+syncParamsToUrl$+` effect:
+
 _Adapt in File:_ `+<feature>-search.effects.ts+`
-+
+
 [source, javascript]
 ----
   syncParamsToUrl$ = createEffect(

@@ -1,17 +1,18 @@
 = Configure the search criteria and parameters
 
+:!sectids:
 == To configure the search results, the following steps must be taken.
-// TODO: Provide explanation about: The mapping of the URL parameters must be configured. 
+:sectids:
+:sectnums:
 
-:toc:
+== Request Object
+Add additional properties to the `+<feature>-bff.yaml+`
 
-. Add additional properties to the `+<feature>-bff.yaml+`
-* The `+<FeatureName>SearchRequest+` data structure in the BFF yaml must be adapted. 
+* The `+<FeatureName>SearchRequest+` data structure in the BFF yaml must be adapted.
+** All the data that should be displayed in the request must be in that data structure either on top-level or in sub data structures. 
 
-* All the data that should be displayed in the request must be in that data structure either on top-level or in sub data structures. 
-+
 _Adapt in File:_ `+<feature>-bff.yaml+`
-+
+
 [source, yml]
 ----
   <Feature>SearchRequest:
@@ -25,22 +26,22 @@ _Adapt in File:_ `+<feature>-bff.yaml+`
         type: string
       changeMe:
         type: string
+      ...
 ----
-+
----
-+
-IMPORTANT: Run the command `npm run apigen` after adapting the OpenAPI to transform the changes into typescript code.
-+
-. Please define the members for your `+<%= featurePropertyName %>SearchCriteriasSchema+`
+
+IMPORTANT: Run the command *npm run apigen* after adapting the OpenAPI to transform the changes into typescript code.
+
+== Parameters
+Please define the members for your `+<%= featurePropertyName %>SearchCriteriasSchema+`
 
 * Adapt search parameters
-** keys need to match the keys from your OpenAPIs SearchCriteria Object
+** keys *need* to match the keys from your OpenAPIs SearchCriteria Object
 ** always start with `+z.string()+`
 ** when required, you can use `+.transform()+` to extend the validation
 ** dates are always mapped to strings (as JSON does not know DateTime)
-+
+
 _Adapt in File:_ `+<feature>-search.parameters.ts+`
-+
+
 [source, javascript]
 ----
     exampleString: z.string().optional(),
@@ -72,13 +73,14 @@ _Adapt in File:_ `+<feature>-search.parameters.ts+`
         .optional(),
 ----
 
-. Please specify here your desired search criterias
+== HTML
+Please specify here your desired search criterias
 
 * The input fields must be added
 ** `+formControlName+` and `+ngModel+`-path must match to your SearchCriteria model
-+
+
 _Adapt in File:_ `+<feature>-search.component.html+`
-+
+
 [subs=+macros]
 [source, html]
 ----
@@ -92,11 +94,14 @@ _Adapt in File:_ `+<feature>-search.component.html+`
         ...
 ----
 
-. Examples for different input fields:
+:!sectnums:
+== Examples for different input fields
+:sectnums:
+
 * text input field of type string
 ** Remove `+// PLACE YOUR INPUT FIELD HERE+` and paste the following code
 ** Adapt `+id+`, `+formControlName+`, `+ngModel+` and `+for+` as well as the labels translation key
-+
+
 [source, html]
 ----
     <input
@@ -110,7 +115,7 @@ _Adapt in File:_ `+<feature>-search.component.html+`
       'YOUR_PRODUCT.CRITERIA.ID' | translate
     }}</label>
 ----
-+
+
 * xref:ngrx/cookbook/addingSearchCriteria/calendar.adoc[Calendar input field]
 * xref:ngrx/cookbook/addingSearchCriteria/dropdown.adoc[Dropdown input field]
 * xref:ngrx/cookbook/addingSearchCriteria/multiselect.adoc[MultiSelect input field]

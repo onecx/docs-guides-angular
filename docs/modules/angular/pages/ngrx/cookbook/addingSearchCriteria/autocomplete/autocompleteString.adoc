@@ -1,13 +1,17 @@
 = AutoComplete with array of type string
 
+:!sectids:
 == Goal: Add an AutoComplete for suggestions with array of type string as a search criteria input field for your search page. 
+:sectids:
+:sectnums:
 
-. Please define the member for your `+<%= featurePropertyName %>SearchCriteriasSchema+` here
-+
+== Parameters
+Please define the member for your `+<%= featurePropertyName %>SearchCriteriasSchema+` here
+
 NOTE: Please replace all occurences of `+exampleStringArray+` with the actual name in the following code snippets.
-+
+
 _Adapt in File:_ `+<feature>-search.parameters.ts+`
-+
+
 [source, javascript]
 ----
     exampleStringArray: z
@@ -21,10 +25,11 @@ _Adapt in File:_ `+<feature>-search.parameters.ts+`
         .optional(),
 ----
 
-. Add additional array member for the autocomplete suggestions/options in your state and viewmodel:
-+
+== State & viewmodel
+Add additional array member for the autocomplete suggestions in your state and viewmodel:
+
 _Adapt in Files:_ `+<feature>-search.viewmodel.ts+` and `+<feature>-search.state.ts+`
-+
+
 [source, javascript]
 ----
 ...
@@ -32,10 +37,11 @@ _Adapt in Files:_ `+<feature>-search.viewmodel.ts+` and `+<feature>-search.state
 ...
 ----
 
-. Create following actions to handle the events regarding autocomplete:
-+
+== Actions
+Create following actions to handle the events regarding autocomplete:
+
 _Adapt in File:_ `+<feature>-search.actions.ts+`
-+
+
 [source, javascript]
 ----
 ...
@@ -49,10 +55,11 @@ _Adapt in File:_ `+<feature>-search.actions.ts+`
 ...
 ----
 
-. Add the following code to your formGroup in the html file:
-+
+== HTML
+Add the following code to your formGroup in the html file:
+
 _Adapt in File:_ `+<feature>-search.component.html+`
-+
+
 [source, html]
 ----
     <span class="p-float-label">
@@ -79,10 +86,11 @@ _Adapt in File:_ `+<feature>-search.component.html+`
     </span>
 ----
 
-. Add the respective methods to handle the different events:
-+
+== Component
+Add the respective methods to handle the different events:
+
 _Adapt in File:_ `+<feature>-search.component.ts+`
-+
+
 [source, javascript]
 ----
 ...
@@ -112,10 +120,11 @@ _Adapt in File:_ `+<feature>-search.component.ts+`
 ...
 ----
 
-. In the reducers file you need to define the functions:
-+
+== Reducers
+In the reducers file you need to define the functions:
+
 _Adapt in File:_ `+<feature>-search.reducers.ts+`
-+
+
 [source, javascript]
 ----
 ...
@@ -166,10 +175,11 @@ _Adapt in File:_ `+<feature>-search.reducers.ts+`
 ...
 ----
 
-. Add the missing selectors:
-+
+== Selectors
+Add the missing selectors:
+
 _Adapt in File:_ `+<feature>-search.selectors.ts+`
-+
+
 [source, javascript]
 ----
 ...
@@ -191,10 +201,11 @@ _Adapt in File:_ `+<feature>-search.selectors.ts+`
 ...
 ----
 
-. Create the effect for getting the options/suggestions
-+
+== Effects
+Create the effect for getting the suggestions
+
 _Adapt in File:_ `+<feature>-search.effects.ts+`
-+
+
 [source, javascript]
 ----
 ...
