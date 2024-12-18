@@ -6,12 +6,12 @@ The goal of this guide is to provide step by step instructions on how to migrate
 
 == General
 === Prerequisites
-This guide assumes that an Angular project is already set up and that a OneCX platform instance is up and running. At the time of writing, some required dependencies are only compatible with Angular version 18. Therefore the application must be updated to Angular 18 before migrating. Additionally, the Angular application should be based on feature modules, which are lazy loaded before routing.
+This guide assumes that an Angular project is already set up and that a OneCX platform instance is up and running. At the time of writing, some required dependencies are only compatible with Angular version 18. Therefore the application must be updated to Angular 18 before migrating. Additionally, the Angular application should be based on feature modules, which are lazy loaded before routing or route directly to standalone components.
 
 Note that this guide does not cover general Angular project setup or the steps to configure OneCX.
 
 == Migration steps
-The goal of this migration is to transform a "vanilla" Angular app into a OneCX compatible app that exposes a microfrontend which can be loaded and displayed by the OneCX platform. To achieve this goal, a few migration steps have to be completed. All steps have been tested in fresh Angular apps generated with the Angular CLI and the NX CLI (using Webpack as a bundler).
+The goal of this migration is to transform a "vanilla" Angular app into a OneCX compatible app that exposes a microfrontend which can be loaded and displayed by the OneCX platform. To achieve this goal, a few migration steps have to be completed. All steps have been tested in fresh Angular apps generated with the Angular CLI and the NX CLI (using Webpack as a bundler). Some steps only apply to either Angular CLI or NX based applications and are marked accordingly. 
 
 === Ensure that your application works as expected
 Before starting the migration, the correct functionality of the application in its "pre-migration" state should be verified by running existing tests, building the app and running it in a browser. This ensures that the app functions as expected before the migration, helping to prevent unexpected errors in later stages of the process.
@@ -25,19 +25,19 @@ In order to convert an app into a OneCX compatible microfrontend it's necessary 
 npm i @angular/elements@18 @angular-architects/module-federation @onecx/angular-integration-interface @onecx/angular-webcomponents @webcomponents/webcomponentsjs
 ----
 
-.Dev-Dependencies (Angular CLI App)
+.Dev-Dependencies [.red]#(Only Angular CLI)#
 [source,console]
 ----
 npm i -D webpack webpack-merge ngx-build-plus
 ----
 NOTE: For `nx` based applications the above mentioned dev dependencies are not needed as these apps already ship with a configurable builder.
 
-=== Refactor `angular.json` to use ngx-build-plus builders (Only Angular CLI)
+=== Refactor `angular.json` to use ngx-build-plus builders [.red]#(Only Angular CLI)#
 To correctly bundle an app for use in a microfrontend context, the default Angular bundler must be replaced with ngx-build-plus, and a few additional configuration options need to be specified.
 
-Specifically the projects configuration file (`angular.json`) has to be modified in the following way:
-
 NOTE: `YOUR_APP_NAME` should be replaced with the name of the actual application, which can be obtained from `angular.json`. `TODO` comments should be taken care of and afterwards removed from the file. 
+
+.angular.json
 [source,json]
 ...
 "architect": {
@@ -81,6 +81,40 @@ NOTE: `YOUR_APP_NAME` should be replaced with the name of the actual application
             "buildTarget": "YOUR_APP_NAME:build",
             "extraWebpackConfig": "webpack.config.js"
         }
+    },
+    ...
+}
+
+=== Refactor `project.json` to enable custom bundling [.aqua]#(Only NX)#
+To correctly bundle an app for use in a microfrontend context, the default bundler used for NX Angular projects must be replaced with a specific Webpack bundler, and a few additional configuration options need to be specified.
+
+.project.json
+[source,json]
+...
+"targets": {
+    "build": {
+        "executor": "@nx/angular:webpack-browser",
+        "options": {
+            ...
+            "scripts": ["node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"],
+            "customWebpackConfig": {
+              "path": "webpack.config.js"
+            }
+        },
+        ...
+        "configurations": {
+            "production": {
+              ...
+              "customWebpackConfig": {
+                "path": "webpack.prod.config.js"
+              }
+            },
+            ...
+        }
+    },
+    "serve": {
+        "builder": "@nx/angular:dev-server",
+        ...
     },
     ...
 }
@@ -278,4 +312,4 @@ After completing all steps mentioned in this document, a previously existing "va
 
 == Troubleshooting
 === Compilation error `TypeError: The 'compilation' argument must be an instance of Compilation`
-If you encounter the above mentioned error you might be using multiple conflicting `webpack` versions in your project. To verify that this is the case, first run `npm ls webpack`. If this command returns a list of multiple **different** versions of `webpack`, please modify your `package.json` file to resolve the version mismatches. In our case it helped to set the version to a fixed version (5.94.0), as this was the exact version that one other package tried to use as a peer dependency.
+If you encounter the above mentioned error you might be using multiple conflicting `webpack` versions in your project. To verify that this is the case, first run `npm ls webpack`. If this command returns a list of multiple **different** versions of `webpack`, please modify your `package.json` file to resolve the version mismatches (change version or install webpack dependency if it doesn't exist yet). In our case it helped to set the version to a fixed version (5.94.0), as this was the exact version that one other package tried to use as a peer dependency.
