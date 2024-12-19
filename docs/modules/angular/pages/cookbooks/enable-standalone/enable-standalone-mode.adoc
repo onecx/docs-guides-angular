@@ -65,7 +65,7 @@ To ensure correct translation loading in an application using `@ngx-translate` a
       ...
     ],
 
-2. `TranslateModule.forRoot()` has to be configured in the app modules imports array. `createTranslateLoader` has to be imported from `@onecx/angular-integration-interface` and ensures that the correct translation files is loaded on app load.
+2. `TranslateModule.forRoot()` has to be configured in the app modules imports array. `createTranslateLoader` has to be imported from `@onecx/angular-utils` and ensures that the correct translation files is loaded on app load.
 
   imports: [
     ...

@@ -22,7 +22,7 @@ In order to convert an app into a OneCX compatible microfrontend it's necessary 
 .Dependencies
 [source,console]
 ----
-npm i @angular/elements@18 @angular-architects/module-federation @onecx/angular-integration-interface @onecx/angular-webcomponents @webcomponents/webcomponentsjs
+npm i @angular/elements@18 @angular-architects/module-federation @onecx/angular-integration-interface  @onecx/angular-utils @onecx/angular-webcomponents @webcomponents/webcomponentsjs
 ----
 
 .Dev-Dependencies [.red]#(Only Angular CLI)#
@@ -195,7 +195,8 @@ To ensure correct translation loading in an application using `@ngx-translate` a
 
 1. A few imports have to be added at the beginning of the remote module file.
 
-    import { addInitializeModuleGuard, AppStateService, createTranslateLoader, TRANSLATION_PATH, translationPathFactory } from '@onecx/angular-integration-interface';
+    import { addInitializeModuleGuard, AppStateService } from '@onecx/angular-integration-interface';
+    import { createTranslateLoader, TRANSLATION_PATH, translationPathFactory } from '@onecx/angular-utils'
 
 2. The routes passed to `RouterModule.forRoot()` must be wrapped with `addInitializeModuleGuard`. This ensures correct translation loading for each route.
 
@@ -282,6 +283,7 @@ const config = withModuleFederationPlugin({
     '@angular/router': { requiredVersion: 'auto', includeSecondaries: true },
     rxjs: { requiredVersion: 'auto', includeSecondaries: true },
     '@onecx/angular-integration-interface': { requiredVersion: 'auto', includeSecondaries: true },
+    '@onecx/angular-utils': { requiredVersion: 'auto', includeSecondaries: true },
     '@onecx/angular-webcomponents': { requiredVersion: 'auto', includeSecondaries: true },
   }),
 })
