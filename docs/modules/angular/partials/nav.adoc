@@ -3,8 +3,16 @@
 ** xref:angular:general/guidelines.adoc[Guidelines]
 * Cookbook
 * xref:angular:ngrx/ngrx.adoc[NgRx]
+** Cookbook
+*** xref:angular:ngrx/cookbook/addingSearchCriteria/general.adoc[Adding Search Criteria]
+**** xref:angular:ngrx/cookbook/addingSearchCriteria/autocomplete/autocomplete.adoc[AutoComplete]
+***** xref:angular:ngrx/cookbook/addingSearchCriteria/autocomplete/autocompleteString.adoc[AutoComplete with array of type string]
+***** xref:angular:ngrx/cookbook/addingSearchCriteria/autocomplete/autocompleteNumber.adoc[AutoComplete with array of type number]
+***** xref:angular:ngrx/cookbook/addingSearchCriteria/autocomplete/autocompleteObject.adoc[AutoComplete with array of type object]
+**** xref:angular:ngrx/cookbook/addingSearchCriteria/calendar.adoc[Calendar]
+**** xref:angular:ngrx/cookbook/addingSearchCriteria/dropdown.adoc[Dropdown]
+**** xref:angular:ngrx/cookbook/addingSearchCriteria/multiselect.adoc[Multiselect]
 * Libraries
 ** xref:angular:libraries/symlink.adoc[How to create a SymLink]
 ** xref:angular:libraries/angular-integration-interface.adoc[@onecx/angular-integration-interface]
 ** xref:angular:libraries/workingWithSharedLibraries.adoc[]
-
