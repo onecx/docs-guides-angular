@@ -1,10 +1,14 @@
 = AutoComplete with array of type string
 
+:idprefix:
+:idseparator: -
 :!sectids:
+[#goal]
 == Goal: Add an AutoComplete for suggestions with array of type string as a search criteria input field for your search page. 
 :sectids:
 :sectnums:
 
+[#parameters]
 == Parameters
 Please define the member for your `+<%= featurePropertyName %>SearchCriteriasSchema+` here
 
@@ -25,6 +29,7 @@ _Adapt in File:_ `+<feature>-search.parameters.ts+`
         .optional(),
 ----
 
+[#state-and-viewmodel]
 == State & viewmodel
 Add additional array member for the autocomplete suggestions in your state and viewmodel:
 
@@ -37,6 +42,7 @@ _Adapt in Files:_ `+<feature>-search.viewmodel.ts+` and `+<feature>-search.state
 ...
 ----
 
+[#actions]
 == Actions
 Create following actions to handle the events regarding autocomplete:
 
@@ -55,6 +61,7 @@ _Adapt in File:_ `+<feature>-search.actions.ts+`
 ...
 ----
 
+[#html]
 == HTML
 Add the following code to your formGroup in the html file:
 
@@ -86,6 +93,7 @@ _Adapt in File:_ `+<feature>-search.component.html+`
     </span>
 ----
 
+[#component]
 == Component
 Add the respective methods to handle the different events:
 
@@ -120,6 +128,7 @@ _Adapt in File:_ `+<feature>-search.component.ts+`
 ...
 ----
 
+[#reducers]
 == Reducers
 In the reducers file you need to define the functions:
 
@@ -175,6 +184,7 @@ _Adapt in File:_ `+<feature>-search.reducers.ts+`
 ...
 ----
 
+[#selectors]
 == Selectors
 Add the missing selectors:
 
@@ -201,6 +211,7 @@ _Adapt in File:_ `+<feature>-search.selectors.ts+`
 ...
 ----
 
+[#effects]
 == Effects
 Create the effect for getting the suggestions
 

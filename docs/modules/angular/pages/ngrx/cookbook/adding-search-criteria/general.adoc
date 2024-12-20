@@ -1,10 +1,14 @@
 = Configure the search criteria and parameters
 
+:idprefix:
+:idseparator: -
 :!sectids:
+[#configure-search-results]
 == To configure the search results, the following steps must be taken.
 :sectids:
 :sectnums:
 
+[#request-object]
 == Request Object
 Add additional properties to the `+<feature>-bff.yaml+`
 
@@ -31,6 +35,7 @@ _Adapt in File:_ `+<feature>-bff.yaml+`
 
 IMPORTANT: Run the command *npm run apigen* after adapting the OpenAPI to transform the changes into typescript code.
 
+[#parameters]
 == Parameters
 Please define the members for your `+<%= featurePropertyName %>SearchCriteriasSchema+`
 
@@ -73,6 +78,7 @@ _Adapt in File:_ `+<feature>-search.parameters.ts+`
         .optional(),
 ----
 
+[#html]
 == HTML
 Please specify here your desired search criterias
 
@@ -95,6 +101,7 @@ _Adapt in File:_ `+<feature>-search.component.html+`
 ----
 
 :!sectnums:
+[#examples-for-different-input-fields]
 == Examples for different input fields
 :sectnums:
 
@@ -116,7 +123,7 @@ _Adapt in File:_ `+<feature>-search.component.html+`
     }}</label>
 ----
 
-* xref:ngrx/cookbook/addingSearchCriteria/calendar.adoc[Calendar input field]
-* xref:ngrx/cookbook/addingSearchCriteria/dropdown.adoc[Dropdown input field]
-* xref:ngrx/cookbook/addingSearchCriteria/multiselect.adoc[MultiSelect input field]
-* xref:ngrx/cookbook/addingSearchCriteria/autocomplete/autocomplete.adoc[AutoComplete input field]
+* xref:ngrx/cookbook/adding-search-criteria/calendar.adoc[Calendar input field]
+* xref:ngrx/cookbook/adding-search-criteria/dropdown.adoc[Dropdown input field]
+* xref:ngrx/cookbook/adding-search-criteria/multiselect.adoc[MultiSelect input field]
+* xref:ngrx/cookbook/adding-search-criteria/autocomplete/autocomplete.adoc[AutoComplete input field]
