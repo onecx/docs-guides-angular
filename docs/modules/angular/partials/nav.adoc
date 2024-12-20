@@ -1,7 +1,9 @@
 
 * xref:angular:general/index.adoc[General]
 ** xref:angular:general/guidelines.adoc[Guidelines]
-* Cookbook
+* Cookbooks
+** xref:cookbooks/vanilla-to-onecx/migrate-to-onecx.adoc[Migrate vanilla Angular apps to OneCX]
+** xref:cookbooks/enable-standalone/enable-standalone-mode.adoc[Enable standalone mode for OneCX apps]
 * xref:angular:ngrx/ngrx.adoc[NgRx]
 ** Cookbook
 *** xref:angular:ngrx/cookbook/adding-search-criteria/general.adoc[Adding Search Criteria]
