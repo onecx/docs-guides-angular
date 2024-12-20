@@ -4,7 +4,7 @@
 :idseparator: -
 :!sectids:
 [#configure-search-results]
-== To configure the search results, the following steps must be taken.
+== To configure the search criteria and parameters, the following steps must be taken.
 :sectids:
 :sectnums:
 
@@ -12,38 +12,32 @@
 == Request Object
 Add additional properties to the `+<feature>-bff.yaml+`
 
-* The `+<FeatureName>SearchRequest+` data structure in the BFF yaml must be adapted.
-** All the data that should be displayed in the request must be in that data structure either on top-level or in sub data structures. 
-
 _Adapt in File:_ `+<feature>-bff.yaml+`
 
 [source, yml]
 ----
-  <Feature>SearchRequest:
-    type: object
-    properties:
-      limit:
-        type: integer
-        format: int32
-        maximum: 2500
-      id:
-        type: string
-      changeMe:
-        type: string
-      ...
+Search<Feature>Request:
+      type: object
+      properties:
+        pageNumber: 
+          type: integer
+          format: int32
+          default: 0
+          description: 'The number of the page.'          
+        pageSize:
+          type: integer
+          format: int32
+          default: 100
+          maximum: 1000
+          description: 'The size of the page.'      
+        id:
+          type: string
+        # Add additional properties here
 ----
-
-IMPORTANT: Run the command *npm run apigen* after adapting the OpenAPI to transform the changes into typescript code.
 
 [#parameters]
 == Parameters
 Please define the members for your `+<%= featurePropertyName %>SearchCriteriasSchema+`
-
-* Adapt search parameters
-** keys *need* to match the keys from your OpenAPIs SearchCriteria Object
-** always start with `+z.string()+`
-** when required, you can use `+.transform()+` to extend the validation
-** dates are always mapped to strings (as JSON does not know DateTime)
 
 _Adapt in File:_ `+<feature>-search.parameters.ts+`
 
@@ -83,7 +77,7 @@ _Adapt in File:_ `+<feature>-search.parameters.ts+`
 Please specify here your desired search criterias
 
 * The input fields must be added
-** `+formControlName+` and `+ngModel+`-path must match to your SearchCriteria model
+** `+formControlName+` must match to your SearchCriteria model
 
 _Adapt in File:_ `+<feature>-search.component.html+`
 
@@ -93,6 +87,22 @@ _Adapt in File:_ `+<feature>-search.component.html+`
  <form [formGroup]="criteriaGroup">
       <div class="grid mt-0 p-fluid">
         <div class="col-12 md:col-3">
+          <span class="p-float-label">
+           // PLACE YOUR INPUT FIELD HERE
+          </span>
+        </div>
+        ...
+----
+
+* `*ocxAdvanced` directive
+
+The `*ocxAdvanced` directive specifies whether a field is part of the basic or advanced mode. This mode can be toggled using a button in the search header. The directive will be added to the div element
+
+[source, html]
+----
+ <form [formGroup]="criteriaGroup">
+      <div class="grid mt-0 p-fluid">
+        <div *ocxAdvanced class="col-12 md:col-3">
           <span class="p-float-label">
            // PLACE YOUR INPUT FIELD HERE
           </span>
