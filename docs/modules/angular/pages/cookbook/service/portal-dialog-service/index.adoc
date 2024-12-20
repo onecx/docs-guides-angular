@@ -2,9 +2,11 @@
 
 :dynamic_dialog_config_url: https://primeng.org/dynamicdialog#api.dynamicdialog-config
 
+[#overview]
 == Overview
 This document aims to showcase how to manage dialogs using OneCX libraries.
 
+[#importing-portal-dialog-service]
 == Importing PortalDialogService
 To properly use PortalDialogService, please import it via the `providePortalDialogService`.
 
@@ -22,6 +24,8 @@ providers: [
 ...
 ----
 
+NOTE: PortalDialogService should be provided in the *module's providers array* or in *component's providers array* in case of standalone components usage.
+
 .Inject PortalDialogService via constructor
 [source,javascript]
 ----
@@ -37,8 +41,11 @@ export class MyClass() {
 ----
 
 
+[#basic-usage]
 == Basic Usage
 To open the dialog use the `openDialog` method of the PortalDialogService. It returns an `Observable`, so make sure that the *call is subscribed to*.
+
+IMPORTANT: Please, make sure to unsubscribe in case of directly subscribing for an `openDialog` call.
 
 .openDialog method arguments
 [cols="3,2,5"]
@@ -84,8 +91,10 @@ this.portalDialogService.openDialog('TITLE_KEY', { type: MyComponent, inputs: { 
 })
 ----
 
+[#advanced-usage]
 == Advanced Usage
 
+[#control-dialog-result]
 === Control Dialog Result
 If its desired to extend the result of the dialog, implement the `DialogResult` interface on the component displayed inside the dialog.
 
@@ -108,6 +117,7 @@ portalDialogService.openDialog<string>('TITLE_KEY', { type: MyComponent }, 'PRIM
 })
 ----
 
+[#control-dialog-button-click-events]
 === Control Dialog Button Click Events
 If its desired to validate the dialog state prior to closing the dialog, implement the `DialogButtonClicked` interface on the component displayed inside the dialog.
 
@@ -145,6 +155,7 @@ portalDialogService.openDialog<string>('TITLE_KEY', { type: MyComponent }, 'PRIM
 })
 ----
 
+[#control-dialog-button-enablement]
 === Control Dialog Button Enablement
 If its desired to enable the dialog buttons based on the component's state, implement the `DialogPrimaryButtonDisabled`, `DialogSecondaryButtonDisabled` or `DialogCustomButtonsDisabled` interface on the component displayed inside the dialog.
 
@@ -196,19 +207,24 @@ portalDialogService.openDialog('TITLE_KEY', { type: MyComponent }, 'PRIMARY_KEY'
 })
 ----
 
+[#customize-dialog]
 === Customize Dialog
 If it is desired to customize the dialog in other areas then the presented content, it is recommended to use the `openDialog` method call argument called `extras`. Most of the configuration properties are compatible with the {dynamic_dialog_config_url}[PrimeNg's DynamicDialog config object], however there are some extended ones.
 
+[#close-button]
 ==== Control The Dialog Close Button
 To control the existence of the 'X' button (close button) for the dialog, use `showXButton` property.
 
 NOTE: The 'X' button will be always visible if only one button is used for the dialog. 
 
+[#custom-buttons]
 ==== Add Custom Buttons to The Dialog
 To use buttons other than default ones, use `customButtons` property. It is an array of buttons to be added to the dialog. It is possible to control the alignment of the buttons.
 
+[#buttons-autofocus]
 ==== Control Buttons Autofocus
 To control the autofocus of the dialog, use `autoFocusButton` and `autoFocusButtonCustomId` properties. When not provided, the autofocus will not be applied to any button.
 
+[#further-customizations]
 ==== Further Customizations
 For the explanations of further properties, please refer to the {dynamic_dialog_config_url}[PrimeNg's DynamicDialog config object documentation].
