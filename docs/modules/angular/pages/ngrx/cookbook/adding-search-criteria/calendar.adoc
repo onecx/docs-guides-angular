@@ -1,12 +1,16 @@
 = Calendar
 
+:idprefix:
+:idseparator: -
 :!sectids:
+[#goal]
 == Goal: Add a Calendar as a search criteria input field for your search page. 
 :sectids:
 :sectnums:
 
 NOTE: Please replace all occurences of `+exampleDate+` with the actual name in the following code snippets
 
+[#parameters]
 == Parameters
 First add a new member to the <%= featurePropertyName %>SearchCriteriasSchema:
 
@@ -20,6 +24,7 @@ _Adapt in File:_ `+<feature>-search.parameters.ts+`
         .optional(),
 ----
 
+[#html]
 == HTML
 Next, add the following code to your formGroup in the html file and adapt:
 
@@ -49,6 +54,7 @@ _Adapt in File:_ `+<feature>-search.component.html+`
     </span>
 ----
 
+[#selectors]
 == Selectors
 Furthermore, the following needs to be done to correctly create date strings out of a p-calendar selector:
 
@@ -76,6 +82,7 @@ _Adapt in File:_ `+<feature>-search.component.ts+`
     }
 ----
 
+[#effects]
 == Effects (Optional)
 If it is required to only have the `+date+` and not the `+datetime+' in the URL, you need to adapt the `+syncParamsToUrl$+` effect:
 

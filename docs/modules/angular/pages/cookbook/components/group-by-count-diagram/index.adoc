@@ -1,0 +1,10 @@
+= OneCX GroupByCountDiagram
+
+== Overview
+This document aims to showcase how to manage GroupByCountDiagram Component.
+
+// TODO: How to import
+// TODO: How to use - storybook
+
+// TODO: Overview of properties
+// TODO: Overview of interfaces related
