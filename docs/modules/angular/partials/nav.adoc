@@ -2,6 +2,8 @@
 * xref:angular:general/index.adoc[General]
 ** xref:angular:general/guidelines.adoc[Guidelines]
 * Cookbook
+** Services
+*** xref:angular:cookbook/service/portal-dialog-service/index.adoc[PortalDialogService]
 * xref:angular:ngrx/ngrx.adoc[NgRx]
 ** Cookbook
 *** xref:angular:ngrx/cookbook/adding-search-criteria/general.adoc[Adding Search Criteria]
